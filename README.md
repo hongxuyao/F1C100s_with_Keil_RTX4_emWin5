@@ -18,6 +18,8 @@ F1C100s with Keil RTX4 + emWin5
 
 # 图赏
 ![三款PCB](doc/img/index.jpg)
+![F1C100s](doc/img/1.jpg)
+![Keil MDK](doc/img/2.jpg)
 ![图1](doc/img/a.jpg)
 ![图2](doc/img/b.jpg)
 ![图3](doc/img/c.jpg)
@@ -28,5 +30,5 @@ F1C100s with Keil RTX4 + emWin5
 ![图8](doc/img/h.jpg)
 
 # 打赏
-![给作者打赏获得增强](doc/img/alipay.jpg)
+![给作者打赏获得FEL增强版](doc/img/alipay.jpg)
 
