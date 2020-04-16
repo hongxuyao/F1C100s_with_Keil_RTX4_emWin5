@@ -8,11 +8,6 @@ F1C100s with Keil RTX4 + emWin5
 * widora的tiny200 v2
 * sipeed的lichee-pi nano
 
-# 项目增强
-由于以上三款开发板没有引出jtag接口，所以开发过程使用sunxi-fel通过USB把程序镜像写入spiflash或者DDR运行就是最快捷的方式。而此开源版本没有FEL写入DDR的支持，这个功能作为扩展功能不作开源。如果你需要这个功能，可以扫描下面的alipay二维码，给作者打赏然后通过QQ联系作者，作者会把支持FEL功能的项目包发到你给定的邮箱。
-
-# 作者QQ：26750452
-
 # 推荐
 推荐使用widora的tiny200开发板，板子为单片机开发者设计了boot和reset按钮，因而进入FEL模式非常方便！板子还自带USB转串口芯片，可作为终端串口，方便调试信息输出。
 
@@ -28,7 +23,4 @@ F1C100s with Keil RTX4 + emWin5
 ![图6](doc/img/f.jpg)
 ![图7](doc/img/g.jpg)
 ![图8](doc/img/h.jpg)
-
-# 打赏
-![给作者打赏获得FEL增强版](doc/img/alipay.jpg)
 
