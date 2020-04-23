@@ -44,11 +44,22 @@ static void map_l1_section(uint32_t* ttb, uint32_t virt, uint32_t phys, uint32_t
 void sys_mmu_init(void)
 {
   uint32_t* ttb = (uint32_t*)(0x80000000 + SZ_16K);           // TTB放在0x80004000处
+  uint32_t dram_siz = *(uint32_t volatile*)0x5c;
+
+  // SRAM的0x5c地址，被DRAM模块设置为DDR容量。
+  if ((dram_siz >> 24) == (uint8_t)'X') {
+    dram_siz &= 0x0FFF;
+  } else {
+    dram_siz = 32;
+  }
+  dram_siz = dram_siz * SZ_1M;  /* 把容量数值转换为字节数 */
 
   map_l1_section(ttb, 0x00000000, 0x00000000, SZ_2G, 0);
   map_l1_section(ttb, 0x80000000, 0x80000000, SZ_2G, 0);
   map_l1_section(ttb, 0x00000000, 0x00000000, SZ_1M * 1, 2);  // 向量表在此
-  map_l1_section(ttb, 0x80000000, 0x80000000, SZ_1M * 32, 3); // SDRAM空间
+  map_l1_section(ttb, 0x80000000, 0x80000000, dram_siz, 3);   // SDRAM空间
+  dram_siz = 0x80000000 + dram_siz - (SZ_1M * 4);
+  map_l1_section(ttb, dram_siz, dram_siz, SZ_1M * 4, 2);      // FrameBuffer空间
 
   arm32_ttb_set((uint32_t)(ttb));
   arm32_tlb_invalidate();

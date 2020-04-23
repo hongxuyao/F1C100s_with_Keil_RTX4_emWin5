@@ -41,11 +41,11 @@
 #if 0
 #define FB_LCD_XSIZE    (800)
 #define FB_LCD_YSIZE    (480)
-#define PIXEL_CLOCK     (30000000)
+#define PIXEL_CLOCK     (33000000)
 #else
 #define FB_LCD_XSIZE    (480)
 #define FB_LCD_YSIZE    (272)
-#define PIXEL_CLOCK     (12000000)
+#define PIXEL_CLOCK     (11000000)
 #endif
 
 typedef struct {
@@ -97,8 +97,8 @@ static pwm_t led_pwm_bl = {
   .pwm_pin_cfg = 3,
 };
 
-static fb_f1c100s_priv_data_t fb_f1c100s_priv_object;
-static uint32_t fb_mem[2][FB_LCD_XSIZE * FB_LCD_YSIZE] __attribute__((aligned(32)));
+static fb_f1c100s_priv_data_t fb_f1c100s_priv_object = {0};
+//static uint32_t fb_mem[2][FB_LCD_XSIZE * FB_LCD_YSIZE] __attribute__((aligned(32)));
 
 reset_f1c100s_t reset_1 = {
   .virt = 0x01c202c0,
@@ -256,8 +256,10 @@ static void clk_mux_set_parent(uint32_t virt, uint32_t width, uint32_t shift, ui
 
 static void f1c100s_clk_defe_init(void)
 {
+  uint32_t pll_video_clock;
   clk_mux_set_parent(0x01c2010c, 3, 24, 0);
-  clk_divider_set_rate(0x01c2010c, 4, 0, true, /*24000000*/f1c100s_tcon_clk_get_rate(), 198000000);
+  pll_video_clock = f1c100s_tcon_clk_get_rate();
+  clk_divider_set_rate(0x01c2010c, 4, 0, true, pll_video_clock, pll_video_clock);
 }
 inline static void f1c100s_clk_defe_enable()
 {
@@ -285,8 +287,10 @@ inline static void f1c100s_clk_defe_disable()
 
 static void f1c100s_clk_debe_init(void)
 {
+  uint32_t pll_video_clock;
   clk_mux_set_parent(0x01c20104, 3, 24, 0);
-  clk_divider_set_rate(0x01c20104, 4, 0, true, /*24000000*/f1c100s_tcon_clk_get_rate(), 198000000);
+  pll_video_clock = f1c100s_tcon_clk_get_rate();
+  clk_divider_set_rate(0x01c20104, 4, 0, true, pll_video_clock, pll_video_clock);
 }
 
 // "clk-mux@0x01c20104": {
@@ -416,6 +420,15 @@ void fb_f1c100s_init(framebuffer_t* fb)
 {
   int32_t i;
   fb_f1c100s_priv_data_t* pdat = &fb_f1c100s_priv_object;
+  uint32_t dram_siz = *(uint32_t volatile*)0x5c;
+
+  // SRAM的0x5c地址，被DRAM模块设置为DDR容量。
+  if ((dram_siz >> 24) == (uint8_t)'X') {
+    dram_siz &= 0x0FFF;
+  } else {
+    dram_siz = 32;
+  }
+  dram_siz = (dram_siz << 20);
 
   pdat->virtdefe = phys_to_virt(F1C100S_DEFE_BASE);
   pdat->virtdebe = phys_to_virt(F1C100S_DEBE_BASE);
@@ -433,8 +446,8 @@ void fb_f1c100s_init(framebuffer_t* fb)
   pdat->bits_per_pixel = 18;
   pdat->bytes_per_pixel = 4;
   pdat->index = 0;
-  pdat->vram[0] = fb_mem[0];
-  pdat->vram[1] = fb_mem[1];
+  pdat->vram[0] = (void*)(0x80000000 + dram_siz - 0x400000);
+  pdat->vram[1] = (void*)((uint32_t)pdat->vram[0] + FB_LCD_XSIZE * FB_LCD_YSIZE * 4);
 
   pdat->timing.pixel_clock_hz = PIXEL_CLOCK;
   pdat->timing.h_front_porch = 40;
@@ -474,12 +487,42 @@ void fb_f1c100s_init(framebuffer_t* fb)
 
 void* fb_f1c100s_get_vram1(void)
 {
-  return fb_mem[0];
+  uint32_t dram_siz = *(uint32_t volatile*)0x5c;
+
+  fb_f1c100s_priv_data_t* pdat = &fb_f1c100s_priv_object;
+  if (pdat->vram[0])
+    return pdat->vram[0];
+
+  // SRAM的0x5c地址，被DRAM模块设置为DDR容量。
+  if ((dram_siz >> 24) == (uint8_t)'X') {
+    dram_siz &= 0x0FFF;
+  } else {
+    dram_siz = 32;
+  }
+  dram_siz = (dram_siz << 20);
+  return (void*)(0x80000000 + dram_siz - 0x400000);
+
+  //return fb_mem[0];
 }
 
 void* fb_f1c100s_get_vram2(void)
 {
-  return fb_mem[1];
+  uint32_t dram_siz = *(uint32_t volatile*)0x5c;
+
+  fb_f1c100s_priv_data_t* pdat = &fb_f1c100s_priv_object;
+  if (pdat->vram[0])
+    return pdat->vram[0];
+
+  // SRAM的0x5c地址，被DRAM模块设置为DDR容量。
+  if ((dram_siz >> 24) == (uint8_t)'X') {
+    dram_siz &= 0x0FFF;
+  } else {
+    dram_siz = 32;
+  }
+  dram_siz = (dram_siz << 20);
+  return (void*)(0x80000000 + dram_siz - 0x400000 + FB_LCD_XSIZE * FB_LCD_YSIZE * 4);
+
+  //return fb_mem[1];
 }
 
 void fb_f1c100s_remove(framebuffer_t* fb)

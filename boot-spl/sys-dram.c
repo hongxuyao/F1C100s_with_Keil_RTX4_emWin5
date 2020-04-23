@@ -420,6 +420,7 @@ static int dram_init(struct dram_para_t* para)
 int sys_dram_init(void)
 {
   struct dram_para_t para;
+  uint32_t volatile* dsz = (uint32_t*)0x5c;
 
   para.base = 0x80000000;
   para.size = 32;
@@ -434,8 +435,14 @@ int sys_dram_init(void)
   para.bank_size = 4;
   para.cas = 0x3;
 
+  if ((dsz[0] >> 24) == (uint8_t)'X') {
+    // DDR已经配置
+    return 1;
+  }
+
   if (dram_init(&para)) {
     // 配置成功
+    dsz[0] = (((uint32_t)'X' << 24) | para.size);
     return 1;
   }
   // 失败！

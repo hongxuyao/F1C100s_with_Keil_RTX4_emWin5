@@ -60,7 +60,7 @@ static framebuffer_t fb_f1c100s;
 static void lcd_frame_irq(void)
 {
   write32(F1C100S_TCON_BASE + 0x04, (1U << 31));
-  MMU_TestCleanDCache();
+  //MMU_TestCleanDCache();
 }
 
 /*********************************************************************
