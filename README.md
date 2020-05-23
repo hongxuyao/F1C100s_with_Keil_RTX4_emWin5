@@ -8,6 +8,10 @@ F1C100s with Keil RTX4 + emWin5
 * widora的tiny200 v2
 * sipeed的lichee-pi nano
 
+# 分支
+* fb-write-through
+该分支的帧缓存安排在SDRAM末尾的“非缓存写通”区域，预留了4MB。这样就不用在帧中断里清理cache了！从而避免在屏幕上出现一些小横条。
+
 # 推荐
 推荐使用widora的tiny200开发板，板子为单片机开发者设计了boot和reset按钮，因而进入FEL模式非常方便！板子还自带USB转串口芯片，可作为终端串口，方便调试信息输出。
 
