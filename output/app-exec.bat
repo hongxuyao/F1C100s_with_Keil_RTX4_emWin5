@@ -1,3 +1,3 @@
 @sunxi-fel.exe -l
-@sunxi-fel.exe uboot Blinky.bin
+@sunxi-fel.exe uboot spl-separated.bin
 @pause
