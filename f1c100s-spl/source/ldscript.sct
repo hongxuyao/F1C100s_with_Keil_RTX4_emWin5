@@ -1,0 +1,15 @@
+;// 本文件由洪旭耀设计，可以通过QQ联系作者：26750452
+
+;// SPL被BROM或FEL加载到0地址，最大16KB
+FLASH_SPL 0x00000000 0x4000
+{
+  EXE_SPL +0
+  {
+    *.o (RESET, +FIRST)
+    * (InRoot$$Sections)
+    * (+RO)
+    * (+RW,+ZI)
+  }
+}
+
+
