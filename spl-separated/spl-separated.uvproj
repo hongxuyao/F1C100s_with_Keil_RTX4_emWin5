@@ -10,8 +10,7 @@
       <TargetName>Product</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pArmCC>5060750::V5.06 update 6 (build 750)::ARMCC</pArmCC>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -225,6 +224,7 @@
             <uocXRam>0</uocXRam>
             <RvdsVP>0</RvdsVP>
             <RvdsMve>0</RvdsMve>
+            <RvdsCdeCp>0</RvdsCdeCp>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>0</StupSel>
@@ -378,7 +378,7 @@
               <MiscControls></MiscControls>
               <Define>PCB_TINY200V1</Define>
               <Undefine></Undefine>
-              <IncludePath>.\users\include;.\machine\include;.\periph\include;.\include;$J\..\..\Segger\emWin\Include</IncludePath>
+              <IncludePath>.\users\include;.\machine\include;.\periph\include;.\include;.\emwin\Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -391,7 +391,7 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <uClangAs>0</uClangAs>
+            <ClangAsOpt>4</ClangAsOpt>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define>PCB_TINY200V1</Define>
@@ -503,9 +503,9 @@
               <FilePath>.\system\GUI_X_RTX.c</FilePath>
             </File>
             <File>
-              <FileName>Segger\emWin\Lib\GUI_ARM_LA.lib</FileName>
+              <FileName>GUI_ARM_LA.lib</FileName>
               <FileType>4</FileType>
-              <FilePath>$TC_ROOT$\Segger\emWin\Lib\GUI_ARM_LA.lib</FilePath>
+              <FilePath>.\emwin\Lib\GUI_ARM_LA.lib</FilePath>
             </File>
           </Files>
         </Group>

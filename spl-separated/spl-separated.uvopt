@@ -10,7 +10,7 @@
     <aExt>*.s*; *.src; *.a*</aExt>
     <oExt>*.obj; *.o</oExt>
     <lExt>*.lib</lExt>
-    <tExt>*.txt; *.h; *.inc</tExt>
+    <tExt>*.txt; *.h; *.inc; *.md</tExt>
     <pExt>*.plm</pExt>
     <CppX>*.cpp</CppX>
     <nMigrate>0</nMigrate>
@@ -380,8 +380,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>$TC_ROOT$\Segger\emWin\Lib\GUI_ARM_LA.lib</PathWithFileName>
-      <FilenameWithoutPath>Segger\emWin\Lib\GUI_ARM_LA.lib</FilenameWithoutPath>
+      <PathWithFileName>.\emwin\Lib\GUI_ARM_LA.lib</PathWithFileName>
+      <FilenameWithoutPath>GUI_ARM_LA.lib</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
