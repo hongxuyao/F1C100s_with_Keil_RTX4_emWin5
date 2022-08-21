@@ -97,7 +97,7 @@ static const char * _pNames[] = {
   "Gunilla", "Hanka", "Heinke", "Helmar", "Henner", "Hennes", "Henrieke", "Immo",
   "India", "Isalie", "Iven", "Jade", "Janice", "Janika", "Janka", "Janneke", "Jannika",
   "Jano", "Jarla", "Jarne", "Jarno", "Jaromir", "Jaron", "Jelana", "Jesper", "Joleen", "Jolie",
-  "Jonte", "Joost", "Jördis", "Joris", "Josie", "Josina", "Jula", "Julina", "Jytte", "Kalle",
+  "Jonte", "Joost", "Jé°Ždis", "Joris", "Josie", "Josina", "Jula", "Julina", "Jytte", "Kalle",
   "Kennet", "Keno", "Kiana", "Kieran", "Laila", "Laureen", "Laurens", "Laurent",
   "Lauritz", "Leana", "Leandra", "Leandro", "Len", "Lenore", "Leona", "Leonore",
   "Levke", "Lewin", "Lientje", "Lilith", "Line", "Linna", "Linnea", "Lisanne", "Livia",

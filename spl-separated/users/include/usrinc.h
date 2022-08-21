@@ -1,4 +1,4 @@
-// ���ļ��ɺ���ҫ��ƣ�����ͨ��QQ��ϵ���ߣ�26750452
+// 本文件由洪旭耀设计，可以通过QQ联系作者：26750452
 #ifndef __USER_INC_H__
 #define __USER_INC_H__
 #include "efxinc.h"
@@ -9,6 +9,7 @@ extern "C"  {
 
 
 bool_t APP_CreateGuiService(void);
+bool_t APP_CreateTouchService(void);
 
 
 

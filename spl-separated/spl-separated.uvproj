@@ -225,6 +225,7 @@
             <RvdsVP>0</RvdsVP>
             <RvdsMve>0</RvdsMve>
             <RvdsCdeCp>0</RvdsCdeCp>
+            <nBranchProt>0</nBranchProt>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>0</StupSel>
@@ -428,6 +429,16 @@
               <FilePath>.\machine\f1c100s-intc.c</FilePath>
             </File>
             <File>
+              <FileName>f1c100s-uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\machine\f1c100s-uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>f1c100s-iic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\machine\f1c100s-iic.c</FilePath>
+            </File>
+            <File>
               <FileName>sys-uart.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\machine\sys-uart.c</FilePath>
@@ -556,6 +567,26 @@
               <FileName>GUI_Task.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\users\task-gui\GUI_Task.c</FilePath>
+            </File>
+            <File>
+              <FileName>DLG_TSCali.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\users\task-gui\DLG_TSCali.c</FilePath>
+            </File>
+            <File>
+              <FileName>Touch_Task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\users\task-gui\Touch_Task.c</FilePath>
+            </File>
+            <File>
+              <FileName>tscali.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\users\task-gui\tscali.c</FilePath>
+            </File>
+            <File>
+              <FileName>tslib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\users\task-gui\tslib.c</FilePath>
             </File>
           </Files>
         </Group>

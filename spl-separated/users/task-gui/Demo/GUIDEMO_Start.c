@@ -23,6 +23,8 @@ Purpose     : GUIDEMO initialization
 #include "GUIDEMO.h"
 
 #include <stdint.h>
+extern uint8_t const doTSCali;
+extern WM_HWIN DLG_CreateTSCali(void);
 /*********************************************************************
 *
 *       MainTask
@@ -33,6 +35,9 @@ void MainTask(void)
   WM_SetCreateFlags(WM_CF_MEMDEV);
 #endif
   GUI_Init();
+  if (doTSCali) {
+    GUI_ExecCreatedDialog(DLG_CreateTSCali());
+  }
 #if GUI_WINSUPPORT
   //  WM_MULTIBUF_Enable(1);
 #endif
