@@ -1,0 +1,38 @@
+;// Linker Control File (scatter-loading)
+;// 本文件由洪旭耀设计，而使用权分发权自由属于你！
+;// 可以通过QQ联系本人：26750452【24小时在线守候】
+
+;// 最大16KB，TTB放在0x80004000处
+FLASH_SPL 0x80000000 0x4000
+{
+  EXE_SPL +0
+  {
+    startup_F1C100s.o (RESET, +FIRST)
+    startup_F1C100s.o (+RO)
+    sys-clock.o (+RO)
+    sys-copyself.o (+RO)
+    sys-dram.o (+RO)
+    sys-mmu.o (+RO)
+    sys-spiflash.o (+RO)
+    sys-uart.o (+RO)
+    aeabi*.o (+RO)
+  }
+}
+
+FLASH_APP 0x80008000 0x1000000
+{
+  EXE_UBOOT 0x80008000 0x40
+  {
+    uboot_head.o (UHEAD, +FIRST)
+  }
+  EXE_CODE 0x80008040 FIXED
+  {
+    uboot_entry.o (UENTRY, +FIRST)
+    * (InRoot$$Sections)
+    * (+RO)
+    .ANY (+RW,+ZI)
+    * (STACK)
+    * (HEAP, +LAST)
+  }
+}
+
