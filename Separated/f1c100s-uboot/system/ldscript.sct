@@ -5,7 +5,7 @@ FLASH_SPL 0x80000000 0x4000
 {
   EXE_SPL +0
   {
-    spl.o (SPLFILE, +FIRST)
+    spl_image.o (SPLFILE, +FIRST)
   }
 }
 

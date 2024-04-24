@@ -4,6 +4,7 @@
 #define __FRAME_TYPES__H__
 ////////////////////////////////////////////////////////////////////////////////
 #include <stdint.h>
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C"  {
@@ -62,9 +63,6 @@ typedef void const*         pcvoid_t;
 #ifndef FALSE
 #define FALSE (!1)
 #endif
-
-#define true  TRUE
-#define false FALSE
 
 #ifndef COUNTOF
 #define COUNTOF(ar) (sizeof(ar)/sizeof(ar[0]))
