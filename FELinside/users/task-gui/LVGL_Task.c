@@ -142,12 +142,10 @@ static bool lv_sim_init(lv_sim_context_t* ctx)
 static void lv_sim_disp_flush_callback(lv_disp_drv_t* disp_drv, const lv_area_t* area, lv_color_t* color_p)
 {
   lv_sim_context_t* ctx = (lv_sim_context_t*)disp_drv->user_data;
-  uint32_t* disp_fb = fb_f1c100s_get_vram1();
-  uint32_t pixel;
+  uint16_t* disp_fb = fb_f1c100s_get_vram1();
   for (int y = area->y1; y <= area->y2; ++y) {
     for (int x = area->x1; x <= area->x2; ++x) {
-      pixel = ((color_p->ch.blue << 19) | (color_p->ch.green << 10) | (color_p->ch.red << 3));
-      disp_fb[y * XSIZE_PHYS + x] = pixel;
+      disp_fb[y * XSIZE_PHYS + x] = color_p->full;
       color_p++;
     }
   }

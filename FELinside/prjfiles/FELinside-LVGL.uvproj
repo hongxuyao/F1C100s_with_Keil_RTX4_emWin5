@@ -377,7 +377,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>PCB_TINY200V1,LV_CONF_INCLUDE_SIMPLE</Define>
+              <Define>PCB_TINY200V1,LV_CONF_INCLUDE_SIMPLE,USE_LVGL</Define>
               <Undefine></Undefine>
               <IncludePath>..\users\include;..\boot-spl\include;..\periph\include;..\include;..\..\lvgl8</IncludePath>
             </VariousControls>

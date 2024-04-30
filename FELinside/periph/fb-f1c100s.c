@@ -39,13 +39,13 @@
 #define phys_to_virt(x) (x)
 
 #if 0
-#define FB_LCD_XSIZE    (800)
-#define FB_LCD_YSIZE    (480)
-#define PIXEL_CLOCK     (30000000)
+  #define FB_LCD_XSIZE    (800)
+  #define FB_LCD_YSIZE    (480)
+  #define PIXEL_CLOCK     (30000000)
 #else
-#define FB_LCD_XSIZE    (480)
-#define FB_LCD_YSIZE    (272)
-#define PIXEL_CLOCK     (12000000)
+  #define FB_LCD_XSIZE    (480)
+  #define FB_LCD_YSIZE    (272)
+  #define PIXEL_CLOCK     (12000000)
 #endif
 
 typedef struct {
@@ -98,7 +98,13 @@ static pwm_t led_pwm_bl = {
 };
 
 static fb_f1c100s_priv_data_t fb_f1c100s_priv_object;
-static uint32_t fb_mem[2][FB_LCD_XSIZE * FB_LCD_YSIZE] __attribute__((aligned(32)));
+#if defined(USE_LVGL) && (USE_LVGL>0)
+  // LVGL using 16bpp (RGB565)
+  static uint32_t fb_mem[2][FB_LCD_XSIZE * FB_LCD_YSIZE / 2] __attribute__((aligned(32)));
+#else
+  // emWin using 32bpp (BGR888)
+  static uint32_t fb_mem[2][FB_LCD_XSIZE * FB_LCD_YSIZE] __attribute__((aligned(32)));
+#endif
 
 reset_f1c100s_t reset_1 = {
   .virt = 0x01c202c0,
@@ -137,10 +143,18 @@ inline static void f1c100s_debe_set_mode(fb_f1c100s_priv_data_t* pdat)
 
   write32((uint32_t)&debe->disp_size, (((pdat->height) - 1) << 16) | (((pdat->width) - 1) << 0));
   write32((uint32_t)&debe->layer0_size, (((pdat->height) - 1) << 16) | (((pdat->width) - 1) << 0));
-  write32((uint32_t)&debe->layer0_stride, ((pdat->width) << 5));
+#if defined(USE_LVGL) && (USE_LVGL>0)
+  write32((uint32_t)&debe->layer0_stride, ((pdat->width) << 4));  // 16bpp stride
+#else
+  write32((uint32_t)&debe->layer0_stride, ((pdat->width) << 5));  // 32bpp stride
+#endif
   write32((uint32_t)&debe->layer0_addr_low32b, (uint32_t)(pdat->vram[pdat->index]) << 3);
   write32((uint32_t)&debe->layer0_addr_high4b, (uint32_t)(pdat->vram[pdat->index]) >> 29);
-  write32((uint32_t)&debe->layer0_attr1_ctrl, (0x09 << 8) | (1 << 2));  /* 此处设置像素格式 */
+#if defined(USE_LVGL) && (USE_LVGL>0)
+  write32((uint32_t)&debe->layer0_attr1_ctrl, (0x05 << 8) | (0 << 2));  // LVGL using 16bpp (RGB565)
+#else
+  write32((uint32_t)&debe->layer0_attr1_ctrl, (0x09 << 8) | (1 << 2));  // emWin using 32bpp (BGR888)
+#endif
 
   val = read32((uint32_t)&debe->mode);
   val |= (1 << 8);
