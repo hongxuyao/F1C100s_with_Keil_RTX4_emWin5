@@ -29,6 +29,7 @@ extern void sys_uart_putc(char c);
 extern void sys_spi_flash_init(void);
 extern void sys_spi_flash_exit(void);
 extern void sys_spi_flash_read(int addr, void* buf, int count);
+extern void sys_spi_flash_read_dualout(int addr, void* buf, int count);
 extern void mmu_clean_dcache(void);
 
 void sys_copyself(uint32_t region_info[2])
@@ -59,7 +60,7 @@ void sys_copyself(uint32_t region_info[2])
   sys_mmu_init();
 
   sys_spi_flash_init();
-  sys_spi_flash_read(0, mem, size);
+  sys_spi_flash_read_dualout(0, mem, size);
   sys_spi_flash_exit();
   mmu_clean_dcache();
 }

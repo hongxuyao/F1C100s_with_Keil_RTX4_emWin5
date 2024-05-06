@@ -8,6 +8,7 @@ extern void sys_dram_init(void);
 extern void sys_uart_init(void);
 extern void sys_spi_flash_init(void);
 extern void sys_spi_flash_read(uint32_t addr, void* buf, int count);
+extern void sys_spi_flash_read_dualout(int addr, void* buf, int count);
 extern void sys_spi_flash_exit(void);
 extern void sys_uart_putc(char c);
 extern void return_to_fel(void);
@@ -100,7 +101,7 @@ void spl_main(void)
   spl_prints(", lr=", 0);
   spl_print32(*(uint32_t*)0x44);
   spl_prints(".\r\n", 0);
-  sys_spi_flash_read(0x8000, &uboot, sizeof(uboot));
+  sys_spi_flash_read_dualout(0x8000, &uboot, sizeof(uboot));
   if (uboot.ih_magic == uswap_32(0x27051956)) {
     spl_prints((char*)uboot.ih_name, 32);
     sys_uart_putc('\r');
@@ -112,7 +113,7 @@ void spl_main(void)
     spl_prints(" bytes @0x", 0);
     spl_print32(load_addr);
 __read_again:
-    sys_spi_flash_read(0x8040, (void*)load_addr, load_size);
+    sys_spi_flash_read_dualout(0x8040, (void*)load_addr, load_size);
     mmu_clean_dcache();
     dcrc = crc32(0, (void*)load_addr, load_size);
     if (dcrc != uswap_32(uboot.ih_dcrc)) {

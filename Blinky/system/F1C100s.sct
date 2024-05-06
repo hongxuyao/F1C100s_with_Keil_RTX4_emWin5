@@ -17,8 +17,8 @@ FLASH_LOAD 0x80008000 0x1000000
   EXE_APP AlignExpr(+0, 16) FIXED
   {
     * (InRoot$$Sections)
-    * (+RO)
-    .ANY (+RW,+ZI)
+    .ANY (+XO, +RO)
+    .ANY (+RW, +ZI)
     * (STACK)
     * (HEAP, +LAST)
   }

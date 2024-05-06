@@ -88,7 +88,7 @@ void sys_spi_flash_init(void)
   /* Enable spi0 and do a soft reset */
   addr = 0x01c05000;
   val = read32(addr + SPI_GCR);
-  val |= (1UL << 31) | (1 << 7) | (1 << 1) | (1 << 0);
+  val |= (1UL << 31) | (1 << 7) | (1 << 1) | (1 << 0);  // Transmit Pause Enable (TP_EN)
   write32(addr + SPI_GCR, val);
   while (read32(addr + SPI_GCR) & (1UL << 31));
 
@@ -197,6 +197,48 @@ void sys_spi_flash_read(int addr, void* buf, int count)
   tx[3] = (uint8_t)(addr >> 0);
   sys_spi_select();
   sys_spi_write_then_read(tx, 4, buf, count);
+  sys_spi_deselect();
+}
+
+void sys_spi_flash_read_dualout(int addr, void* buf, int count)
+{
+  uint32_t reg_base = 0x01c05000;
+  uint8_t* rxbuf = buf;
+  uint8_t tx[5];
+  int n, i, c;
+
+  n = 0;
+  tx[n++] = 0x3b;   // fast read dual-output
+  tx[n++] = (uint8_t)(addr >> 16);
+  tx[n++] = (uint8_t)(addr >> 8);
+  tx[n++] = (uint8_t)(addr >> 0);
+  tx[n++] = 0;
+  sys_spi_select();
+  write32(reg_base + SPI_MBC, n);
+  write32(reg_base + SPI_MTC, n);
+  write32(reg_base + SPI_BCC, n);
+  for (i = 0; i < n; i++) {
+    write8(reg_base + SPI_TXD, tx[i]);
+  }
+  write32(reg_base + SPI_TCR, read32(reg_base + SPI_TCR) | (1u << 31));
+  while (read32(reg_base + SPI_TCR) & (1u << 31));
+  write32(reg_base + SPI_FCR, read32(reg_base + SPI_FCR) | 0x80008000u);
+  while (count > 0) {
+    n = ((count <= 4096) ? count : 4096);
+    write32(reg_base + SPI_MBC, n);
+    write32(reg_base + SPI_MTC, 0);
+    write32(reg_base + SPI_BCC, (1 << 28)); // dual-mode
+    write32(reg_base + SPI_TCR, read32(reg_base + SPI_TCR) | (1u << 31));
+    for (i = n; i > 0;) {
+      if ((c = (read32(reg_base + SPI_FSR) & 0xff)) > 0) {
+        i -= c;
+        while (c-- > 0) {
+          *rxbuf++ = read8(reg_base + SPI_RXD);
+        }
+      }
+    }
+    count -= n;
+  }
   sys_spi_deselect();
 }
 

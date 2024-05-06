@@ -30,6 +30,7 @@ extern void sys_uart_putc(char c);
 extern void sys_spi_flash_init(void);
 extern void sys_spi_flash_exit(void);
 extern void sys_spi_flash_read(int addr, void* buf, int count);
+extern void sys_spi_flash_read_dualout(int addr, void* buf, int count);
 extern void mmu_clean_dcache(void);
 
 void sys_copyself(uint32_t region_info[4])
@@ -89,9 +90,9 @@ void sys_copyself(uint32_t region_info[4])
     sys_mmu_init();
     sys_spi_flash_init();
     // 先读取SPL部分，注意SPL不能大于16KB！因为TTB放在0x80004000处
-    sys_spi_flash_read(0x0000, (void*)region_info[2], (region_info[3] - region_info[2]));
+    sys_spi_flash_read_dualout(0x0000, (void*)region_info[2], (region_info[3] - region_info[2]));
     // 再读取运行在0x80008000地址开始的APP部分
-    sys_spi_flash_read(0x8000, (void*)region_info[0], (region_info[1] - region_info[0]));
+    sys_spi_flash_read_dualout(0x8000, (void*)region_info[0], (region_info[1] - region_info[0]));
     sys_spi_flash_exit();
     mmu_clean_dcache();
   }

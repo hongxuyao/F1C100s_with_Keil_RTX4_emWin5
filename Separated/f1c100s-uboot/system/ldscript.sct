@@ -19,8 +19,8 @@ FLASH_APP 0x80008000 0x1000000
   {
     startup_F1C100s.o (RESET, +FIRST)
     * (InRoot$$Sections)
-    * (+RO)
-    .ANY (+RW,+ZI)
+    .ANY (+XO, +RO)
+    .ANY (+RW, +ZI)
     * (STACK)
     * (HEAP, +LAST)
   }
